@@ -5,10 +5,19 @@ const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   try {
-    const { username, email, password, fullName } = req.body;
+    const {
+      email,
+      password,
+      confirmPassword,
+      fullName,
+      address,
+      province,
+      city,
+    } = req.body;
 
-    if (!username || !email || !password || !fullName)
+    if (!email || !password || !fullName || !address || !province || !city) {
       return res.status(400).json({ errorMessage: "Incorrect field" });
+    }
 
     if (password.length < 6) {
       return res
@@ -16,15 +25,13 @@ router.post("/", async (req, res) => {
         .json({ errorMessage: "Password must have more than 6 characters" });
     }
 
+    if (password !== confirmPassword) {
+      return res.status(400).json({ errorMessage: "Passwords don't match" });
+    }
+
     const existingUser1 = await User.findOne({ email });
     if (existingUser1) {
       return res.status(400).json({ errorMessage: "Email already exists" });
-    }
-
-    // check if username exists
-    const existingUser2 = await User.findOne({ username });
-    if (existingUser2) {
-      return res.status(400).json({ errorMessage: "Username already exists" });
     }
 
     // hash the password
@@ -34,11 +41,14 @@ router.post("/", async (req, res) => {
 
     // save user to database
     const newUser = new User({
-      username,
       email,
       password: passwordHash,
       fullName,
+      address,
+      province,
+      city,
     });
+
     const savedUser = await newUser.save();
     console.log(savedUser);
 

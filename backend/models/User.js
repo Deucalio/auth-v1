@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   email: {
     type: String,
     required: true,
@@ -20,11 +15,16 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   address: {
-    street: String,
-    city: String,
-    state: String,
-    country: String,
-    zipCode: String,
+    type: String,
+    required: true,
+  },
+  province: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
   },
   offers: [
     {

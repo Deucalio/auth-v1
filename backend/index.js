@@ -11,8 +11,9 @@ require("dotenv").config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:3000"],
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true,
+  optionSuccessStatus:200
 }));
 
 mongoose
@@ -34,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", require("./routers/userRouter"));
-app.use("/customer", require("./routers/customerRouter"));
+app.use("/offer", require("./routers/offerRouter"));
 
 // listen to port
 app.listen(PORT, () => {
