@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PostOffer = () => {
   const [offer, setOffer] = useState({
@@ -20,27 +21,36 @@ const PostOffer = () => {
   const handleSubmit = async () => {
     // call api to post offer
     const req = await axios.post("http://localhost:5000/offer", offer);
-    console.log(req);
 
-  }
+    // clean text from input
+    setOffer({
+      user: "",
+      product: "",
+      description: "",
+      quantity: "",
+      targetPrice: "",
+    });
+  };
 
   return (
     <>
       <main className="relative h-[75vh] flex flex-col justify-center px-6 py-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="absolute h-8 w-8 text-gray-300 hover:text-gray-500 transition-all top-0 left-0 hover:cursor-pointer m-3"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
-          />
-        </svg>
+        <Link to="/">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="absolute h-8 w-8 text-gray-300 hover:text-gray-500 transition-all top-0 left-0 hover:cursor-pointer m-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+            />
+          </svg>
+        </Link>
 
         <div className=" border-rose-600 w-fit mx-auto mb-24 text-gray-300">
           <p className="border-b-2 border-gray-500 sm:w-80 text-center text-2xl font-semibold tracking-wide ">
@@ -54,6 +64,7 @@ const PostOffer = () => {
           <input
             onChange={handleChange}
             name="product"
+            value={offer.product}
             maxLength="30"
             className="placeholder:text-slate-600 placeholder:font-semibold  placeholder:opacity-60 placeholder:tracking-tighter outline-0 ring-0  bg-transparent border-b-2 border-slate-500 border-opacity-40 transition-all duration-500 focus:placeholder:opacity-20 focus:placeholder:transition-all focus:placeholder:duration-500 focus:border-opacity-100  active:border-blue-600 focus:border-blue-600"
             type="text"
@@ -65,6 +76,7 @@ const PostOffer = () => {
               Describe your product in detail:
             </label>
             <textarea
+              value={offer.description}
               onChange={handleChange}
               name="description"
               placeholder="I want xyz at the rate that I mentioned below..."
@@ -74,6 +86,7 @@ const PostOffer = () => {
 
           <input
             onChange={handleChange}
+            value={offer.quantity}
             name="quantity"
             className="placeholder:text-slate-600 placeholder:font-semibold  placeholder:opacity-70 outline-0 ring-0 placeholder:tracking-tighter bg-transparent border-b-2 border-slate-500 border-opacity-50 transition-all duration-500 focus:placeholder:opacity-20 focus:placeholder:transition-all focus:placeholder:duration-500 focus:border-opacity-100  active:border-blue-600 focus:border-blue-600"
             type="number"
@@ -82,14 +95,18 @@ const PostOffer = () => {
 
           <input
             onChange={handleChange}
+            value={offer.targetPrice}
             name="targetPrice"
             className="placeholder:text-slate-600 placeholder:font-medium  placeholder:opacity-70 outline-0 ring-0 placeholder:tracking-tighter bg-transparent border-b-2 border-slate-500 border-opacity-40 transition-all duration-500 focus:placeholder:opacity-20 focus:placeholder:transition-all focus:placeholder:duration-500 my-6 focus:border-opacity-100  active:border-blue-600 focus:border-blue-600"
             type="number"
             placeholder="Target Price"
-          /> 
+          />
         </div>
 
-        <button onClick={handleSubmit} className="ml-3 border-sky-40 w-24 shadow-sm rounded-md  py-3 px-2 font-bold text-base bg-pink-500 text-white hover:bg-pink-600 ">
+        <button
+          onClick={handleSubmit}
+          className="ml-3 border-sky-40 w-24 shadow-sm rounded-md  py-3 px-2 font-bold text-base bg-pink-500 text-white hover:bg-pink-600 "
+        >
           Submit
         </button>
         <span className="font-semibold text-base">Press Submit</span>
