@@ -9,6 +9,10 @@ router.post("/", auth, async (req, res) => {
     const userId = req.user;
     const { product, description, quantity, targetPrice } = req.body;
 
+    if (!product || !description || !quantity || !targetPrice){
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+    }
+
     // add to offer schema
     const newOffer = new Offer({
       user: userId,
